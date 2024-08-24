@@ -1,0 +1,17 @@
+services:
+  pinsjobot:
+    container_name: pinsjobot
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./srcs:/usr/src/app
+    environment:
+      DEBUG: ${DEBUG}
+      EMAIL: ${EMAIL}
+      EDITOR: vim
+    restart: always
+    # ports:
+    #   - 99:99
+
+# 
