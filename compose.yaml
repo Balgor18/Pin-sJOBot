@@ -9,6 +9,7 @@ services:
     environment:
       DEBUG: ${DEBUG}
       EMAIL: ${EMAIL}
+      PASSWORD: ${PASSWORD}
       EDITOR: vim
     restart: always
     # ports:
