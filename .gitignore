@@ -1,3 +1,5 @@
 .env
 Log/
 __pycache__/
+*.png
+LOG_SCREEN/

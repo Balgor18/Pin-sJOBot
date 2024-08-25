@@ -41,27 +41,25 @@ class Logger():
             return True
         return False
 
-        
-
     def Info(self, logInfo: str):
         time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('INFO')}INFO{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file)
+        print(f"[{self.COLORS.get('INFO')}INFO{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
 
     def Debug(self, logInfo : str):
         time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('DEBUG')}DEBUG{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file)
+        print(f"[{self.COLORS.get('DEBUG')}DEBUG{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
 
     def Error(self, logInfo : str) :
         time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('ERROR')}ERROR{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file)
+        print(f"[{self.COLORS.get('ERROR')}ERROR{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
 
     def Warning(self, logInfo : str) :
         time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('WARNING')}WARNING{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file)
+        print(f"[{self.COLORS.get('WARNING')}WARNING{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
 
     def Critical(self, logInfo : str) :
         time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('CRITICAL')}CRITICAL{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file)
+        print(f"[{self.COLORS.get('CRITICAL')}CRITICAL{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
 
     def __del__(self) -> None:
         if self.closeFile :
