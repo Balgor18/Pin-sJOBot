@@ -3,19 +3,29 @@
 from Logger import Logger
 from Website import Website
 # from tools import getEnvVariable
-import sys
+import sys, signal
+from functools import partial
 
 # Opening the website
 
 URL = "https://125.galaxyexperienceparis.com/fr/intro/login"
 
-def main():
+def signal_handler(logger : Logger, sig : signal, frame) -> None:
+    logger.Error("Programme stop by CTRL+C")
+    Logger.WRITE_LOG = False
+    sys.exit(1)
+
+def main() -> None:
     try :
         logger = Logger()
+        signal.signal(signal.SIGINT, partial(signal_handler, logger))
+
         website = Website(URL, logger)
 
         website.connect()
         website.goToPhrygesPage()
+
+        website.getPhryges()
 
     except Exception as error :
         logger.Error(error)

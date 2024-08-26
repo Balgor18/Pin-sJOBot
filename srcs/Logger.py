@@ -4,8 +4,10 @@ from colorama import Fore, Style
 
 FOLDERNAME = "Log/"
 
+WRITE_LOG  = True
+
 class Logger():
-    
+
     COLORS = {
         'DEBUG': Fore.BLUE,
         'INFO': Fore.GREEN,
@@ -27,7 +29,6 @@ class Logger():
             print(f"[{style.red('ERROR')}] Creation file {filename} exception {e}", file=sys.stderr)
             exit(1)
 
-    # TODO Check if this class have to create the folder of log
     def _createFolder(self, path : str) -> bool :
         try : 
             os.mkdir(path)
@@ -41,27 +42,26 @@ class Logger():
             return True
         return False
 
-    def Info(self, logInfo: str):
-        time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('INFO')}INFO{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
+    def _print(self, colors, text : str, info : str) -> None:
+        if (WRITE_LOG) : 
+            time = datetime.datetime.today().strftime('%Hh%M:%S')
+            print(f"[{colors}{text}{Style.RESET_ALL}] {str(time)} {info}", file=self.file, flush=True)
 
-    def Debug(self, logInfo : str):
-        time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('DEBUG')}DEBUG{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
+    def Info(self, logInfo: str) -> None :
+        self._print(self.COLORS.get('INFO'), "INFO", logInfo)
 
-    def Error(self, logInfo : str) :
-        time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('ERROR')}ERROR{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
+    def Debug(self, logInfo : str) -> None :
+        self._print(self.COLORS.get('DEBUG'), "DEBUG", logInfo)
 
-    def Warning(self, logInfo : str) :
-        time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('WARNING')}WARNING{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
+    def Error(self, logInfo : str) -> None :
+        self._print(self.COLORS.get('ERROR'), "ERROR", logInfo)
 
-    def Critical(self, logInfo : str) :
-        time = datetime.datetime.today().strftime('%Hh%M:%S')
-        print(f"[{self.COLORS.get('CRITICAL')}CRITICAL{Style.RESET_ALL}] {str(time)} {logInfo}", file=self.file, flush=True)
+    def Warning(self, logInfo : str) -> None :
+        self._print(self.COLORS.get('WARNING'), "WARNING", logInfo)
+
+    def Critical(self, logInfo : str) -> None :
+        self._print(self.COLORS.get('CRITICAL'), "CRITICAL", logInfo)
 
     def __del__(self) -> None:
         if self.closeFile :
             self.file.close()
-        return
