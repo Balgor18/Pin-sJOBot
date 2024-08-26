@@ -10,14 +10,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
 SAVE_FOLDERS = "LOG_SCREEN"
+
+MAX_PINS_VIRUTAL = 48
+
 class Website():
     """docstring for Website."""
 
-    # Here Chrome will be used
     def __init__(self, url : str, logger: Logger, debug : bool = False):
-        self.url = url
-        self.logger = logger
-        self.debug = debug
+        self.url : str = url
+        self.logger : Logger = logger
+        self.debug : bool = debug
+        self.currentVirtualPins : int = 0
         options = webdriver.ChromeOptions()
         webdriver.ChromeService(log_output="selenium.log")
         options.add_argument('--headless')
@@ -27,7 +30,7 @@ class Website():
         self.driver = webdriver.Chrome(options=options)
 
         if debug :
-            self.logger.Info(f"Debug value is turn ON. Information in {SAVE_FOLDERS}")
+            self.logger.Debug(f"Debug value is turn ON. Information in {SAVE_FOLDERS}")
             if not os.path.exists(SAVE_FOLDERS):
                 os.makedirs(SAVE_FOLDERS)
 
@@ -164,10 +167,56 @@ class Website():
         return
 
     def goToPhrygesPage(self) -> None :
-        self.driver.get("https://125.galaxyexperienceparis.com/fr/pin-board/phryges")
+        URL = "https://125.galaxyexperienceparis.com/fr/pin-board/phryges"
+        self.logger.Info(f"Web browser go to {URL}")
+        self.driver.get(URL)
         time.sleep(2)
         if (self.debug) :
             self.driver.save_screenshot(f"{SAVE_FOLDERS}/phryges_page.png")
+
+    def _statusPhryges(self) -> None :
+        try :
+            virtualPins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'PhrygesBoard_currentstamp__')]"))
+            )
+            self.currentVirtualPins = virtualPins.text
+            self.logger.Info(f" Status Pin's virtual : {self.currentVirtualPins}/{MAX_PINS_VIRUTAL}")
+
+            button_qrcode = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//img[@alt='qr icon']"))
+            )
+            button_qrcode.click()
+            time.sleep(2)
+
+
+            collectablePins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(@class, 'QrOperationImageBox_count')]"))
+            )
+            self.logger.Info(f" Status collectable Pin's : {collectablePins.text} !")
+
+            closeModal = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(@class, 'CircleButton_circlebtn_innercontainer')]"))
+            )
+            closeModal.click()
+
+        except Exception as error: 
+            self.logger.Critical(f"Error on _statusPhryges {error}")
+            exit(1)
+        return
+
+    def getPhryges(self) -> None :
+        while True :
+            self._statusPhryges()
+
+            if (self.currentVirtualPins == MAX_PINS_VIRUTAL) :
+                self.logger.Warning("ATTENTION Max pin's virtuel reached")
+                # TODO Create a little thing to notify the user
+            else :
+                # TODO Create the class to emulate gps location
+                self.logger.Critical("Continue the code")
+
+            break ;
+            time.sleep(10)
 
 
     def __del__(self) :
