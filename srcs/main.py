@@ -2,7 +2,6 @@
 
 from Logger import Logger
 from Website import Website
-# from tools import getEnvVariable
 import sys, signal
 from functools import partial
 
@@ -18,9 +17,10 @@ def signal_handler(logger : Logger, sig : signal, frame) -> None:
 def main() -> None:
     try :
         logger = Logger()
+        logger.Info("Start the code")
         signal.signal(signal.SIGINT, partial(signal_handler, logger))
 
-        website = Website(URL, logger)
+        website = Website(URL, logger, debug=False)
 
         website.connect()
         website.goToPhrygesPage()
