@@ -17,12 +17,15 @@ MAX_PINS_VIRUTAL = 48
 
 WAIT_1_HOUR = 3600
 
+WAIT_1_MINUTE = 60
 RETRY_MAX = 3
 
 LOCATIONS_PINS : Tuple[dict] = [
     # Error location not good
     {"name" : "Montparnasse", "latitude" : 48.84164,"longitude" : 2.322622},
-    # HAVE TO TEST LOCATION
+    {"name" : "Champs-Elysees 2", "latitude" : 48.872566,"longitude" : 2.297081},
+    {"name" : "Champs-Elysees 14", "latitude" : 48.870064,"longitude" : 2.308656},
+    # LOCATION IS GOOD
     {"name" : "Exposition Versaille", "latitude" : 48.828522,"longitude" : 2.289897},
     {"name" : "Exposition Versaille 2", "latitude" : 48.82853,"longitude" : 2.289871},
     {"name" : "Entrance Versaille exposition", "latitude" : 48.831011,"longitude" : 2.287623},
@@ -36,7 +39,7 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Concorde Stadium", "latitude" : 48.865621,"longitude" : 2.324362},
     {"name" : "Rue royale", "latitude" : 48.867838,"longitude" : 2.322569},
     {"name" : "Champs-Elysees 1", "latitude" : 48.873329,"longitude" : 2.298051},
-    {"name" : "Champs-Elysees 2", "latitude" : 48.872566,"longitude" : 2.297081},
+
     {"name" : "Champs-Elysees 3", "latitude" : 48.872235,"longitude" : 2.298298},
     {"name" : "Champs-Elysees 4", "latitude" : 48.872461,"longitude" : 2.300274},
     {"name" : "Champs-Elysees 5", "latitude" : 48.872302,"longitude" : 2.299734},
@@ -48,7 +51,7 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Champs-Elysees 11", "latitude" : 48.870420,"longitude" : 2.304580},
     {"name" : "Champs-Elysees 12", "latitude" : 48.871074,"longitude" : 2.305854},
     {"name" : "Champs-Elysees 13", "latitude" : 48.870411,"longitude" : 2.306893},
-    {"name" : "Champs-Elysees 14", "latitude" : 48.870064,"longitude" : 2.308656},
+
     {"name" : "Champs-Elysees 15", "latitude" : 48.869297,"longitude" : 2.307707},
     {"name" : "Champs-Elysees 16", "latitude" : 48.869653,"longitude" : 2.308656},
     {"name" : "Champs-Elysees 17", "latitude" : 48.868333,"longitude" : 2.309426},
@@ -57,7 +60,6 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Place de la Défense 3", "latitude" : 48.891774,"longitude" : 2.236158},
     {"name" : "Place de la Défense 4", "latitude" : 48.891905,"longitude" : 2.234358},
 
-    # LOCATION IS GOOD
     {"name" : "Middle Stade de France", "latitude" : 48.924542,"longitude" : 2.360169},
     {"name" : "Stade de France Porte X", "latitude" : 48.923055,"longitude" : 2.357934},
     {"name" : "West of Stade de France", "latitude" : 48.924112,"longitude" : 2.351847},
@@ -179,7 +181,7 @@ class Website():
     def connect(self) :
         self.driver.get(self.url)
         self.logger.Info(f"Web browser go to {self.url}")
-        time.sleep(4)
+        time.sleep(3)
 
         if (self.debug) :
             self.driver.save_screenshot(f"{SAVE_FOLDERS}/Connect_1.png")
@@ -297,7 +299,7 @@ class Website():
                     self.retry = 0
                     return
                 self.retry += 1
-                time.sleep(10)
+                time.sleep(5)
                 self._collectPhryges(name)
             elif (status_pins.text == "Un pin a été trouvé !") :
                 self.driver.save_screenshot(f"Status_{name}.png")
@@ -338,10 +340,10 @@ class Website():
 
                 self._collectPhryges(location['name'])
 
-                time.sleep(30)
+                time.sleep(4)
             self.logger.Info("End of turn location")
             # time.sleep(WAIT_1_HOUR)
-            time.sleep(240)
+            time.sleep(WAIT_1_MINUTE * 30)
 
 
     def __del__(self) :
