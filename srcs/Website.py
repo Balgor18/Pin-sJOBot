@@ -240,7 +240,7 @@ class Website():
 
             # DEBUG
             # print(self.driver.page_source)
-            self.driver.save_sscreenshot(f"Status_{name}.png")
+            self.driver.save_screenshot(f"Status_{name}.png")
 
             status_pins = WebDriverWait(self.driver, 10).until(
                 expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_text_')]"))# GPSMainSection_text_found
