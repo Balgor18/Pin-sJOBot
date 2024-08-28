@@ -22,10 +22,8 @@ RETRY_MAX = 3
 
 LOCATIONS_PINS : Tuple[dict] = [
     # Error location not good
-    {"name" : "Montparnasse", "latitude" : 48.84164,"longitude" : 2.322622},
-    {"name" : "Champs-Elysees 2", "latitude" : 48.872566,"longitude" : 2.297081},
-    {"name" : "Champs-Elysees 14", "latitude" : 48.870064,"longitude" : 2.308656},
-    # LOCATION IS GOOD
+    {"name" : "Montparnasse", "latitude" : 48.841616,"longitude" : 2.322676},
+    # LOCATION Working
     {"name" : "Exposition Versaille", "latitude" : 48.828522,"longitude" : 2.289897},
     {"name" : "Exposition Versaille 2", "latitude" : 48.82853,"longitude" : 2.289871},
     {"name" : "Entrance Versaille exposition", "latitude" : 48.831011,"longitude" : 2.287623},
@@ -39,10 +37,10 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Concorde Stadium", "latitude" : 48.865621,"longitude" : 2.324362},
     {"name" : "Rue royale", "latitude" : 48.867838,"longitude" : 2.322569},
     {"name" : "Champs-Elysees 1", "latitude" : 48.873329,"longitude" : 2.298051},
-
+    {"name" : "Champs-Elysees 2", "latitude" : 48.873327,"longitude" : 2.298274},
     {"name" : "Champs-Elysees 3", "latitude" : 48.872235,"longitude" : 2.298298},
     {"name" : "Champs-Elysees 4", "latitude" : 48.872461,"longitude" : 2.300274},
-    {"name" : "Champs-Elysees 5", "latitude" : 48.872302,"longitude" : 2.299734},
+    {"name" : "Champs-Elysees 5", "latitude" : 48.872297,"longitude" : 2.299724},
     {"name" : "Champs-Elysees 6", "latitude" : 48.872302,"longitude" : 2.299734},
     {"name" : "Champs-Elysees 7", "latitude" : 48.871546,"longitude" : 2.300453},
     {"name" : "Champs-Elysees 8", "latitude" : 48.871901,"longitude" : 2.300807},
@@ -51,7 +49,7 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Champs-Elysees 11", "latitude" : 48.870420,"longitude" : 2.304580},
     {"name" : "Champs-Elysees 12", "latitude" : 48.871074,"longitude" : 2.305854},
     {"name" : "Champs-Elysees 13", "latitude" : 48.870411,"longitude" : 2.306893},
-
+    {"name" : "Champs-Elysees 14", "latitude" : 48.870121,"longitude" : 2.308167},
     {"name" : "Champs-Elysees 15", "latitude" : 48.869297,"longitude" : 2.307707},
     {"name" : "Champs-Elysees 16", "latitude" : 48.869653,"longitude" : 2.308656},
     {"name" : "Champs-Elysees 17", "latitude" : 48.868333,"longitude" : 2.309426},
@@ -329,7 +327,7 @@ class Website():
 
                 if (self.currentVirtualPins == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
-                    time.sleep(11 * WAIT_1_HOUR)
+                    time.sleep(WAIT_1_MINUTE * 10)
                     continue
 
                 self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
