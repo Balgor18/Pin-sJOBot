@@ -11,6 +11,7 @@ services:
       EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
       EDITOR: vim
+      TZ : "Europe/Paris"
     restart: always
     # ports:
     #   - 99:99
