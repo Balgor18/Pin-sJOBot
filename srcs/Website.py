@@ -340,6 +340,7 @@ class Website():
 
                 time.sleep(4)
             self.logger.Info("End of turn location")
+            self._statusPhryges()
             # time.sleep(WAIT_1_HOUR)
             time.sleep(WAIT_1_MINUTE * 30)
 
