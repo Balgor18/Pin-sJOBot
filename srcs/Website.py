@@ -283,6 +283,8 @@ class Website():
             if (status_pins.text == "Aucun pin n‘a été trouvé.") : # J'ai pas trouvée 
                 self.logger.Warning(f"Error pin's not found need to retry {name}")
                 self.logger.Warning(f"if the error still appear verify coord GPS of \"{name}\"")
+                retryPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
+                retryPins.click()
                 self._collectPhryges(name)
             elif (status_pins.text == "Un pin a été trouvé !") :
                 self.driver.save_screenshot(f"Status_{name}.png")
