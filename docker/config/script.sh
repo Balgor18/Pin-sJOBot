@@ -8,3 +8,4 @@ if [ $DEBUG -eq 1 ]
 then
    /usr/bin/tail -f /dev/null
 fi
+python3 main.py
