@@ -107,6 +107,7 @@ class Website():
             if (self.debug) :
                 self.driver.save_screenshot(f"{SAVE_FOLDERS}/input_email.png")
 
+            time.sleep(2)
             continue_button = self.driver.find_element(By.XPATH, "//p[contains(text(), 'Continuez')]")
             continue_button.click()
             if (self.debug) :
@@ -235,27 +236,46 @@ class Website():
                 expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'PhrygesPinSection_link_title')]"))
             )
             buttonGetPins.click()
-            # TODO Left the page
-            time.sleep(2)
+            time.sleep(10)
 
-            # self.driver.save_screenshot("Status.png")
+            # DEBUG
+            # print(self.driver.page_source)
+            self.driver.save_sscreenshot(f"Status_{name}.png")
 
-            # if () : # J'ai pas trouvée 
-            # TODO MESSAGE ERROR VERIF COORD GPS || RETRY
-            #     self.logger.Warning(f"Error pin's not found need to retry {name}")
-            #     self.logger.Warning(f"if the error still appear verify coord GPS of \"{name}\"")
-            #     self._collectPhryges(name)
+            status_pins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_text_')]"))# GPSMainSection_text_found
+            )
+
             
-            self.logger.Info("Congrats new pin's Add")
+            if (status_pins.text == "Aucun pin n‘a été trouvé.") : # J'ai pas trouvée 
+                self.logger.Warning(f"Error pin's not found need to retry {name}")
+                self.logger.Warning(f"if the error still appear verify coord GPS of \"{name}\"")
+                self._collectPhryges(name)
+            elif (status_pins.text == "Un pin a été trouvé !") :
+                self.driver.save_screenshot(f"Status_{name}.png")
+                self.logger.Info("Congrats new pin's Add")
+                getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Recevoir le pin')]")
+                getPins.click()
+                
+            else :
+                statusPinsPlace = WebDriverWait(self.driver, 10).until(
+                    expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_timer')]"))
+                )
+                
+                self.logger.Info(f"I already have it {name} need to wait {statusPinsPlace.text}")
+                getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
+                getPins.click()
+
+            time.sleep(2)
         except Exception as error :
             self.logger.Error(f"Error on _collectPhryges {error}")
         return
 
     def getPhryges(self) -> None :
         while True :
-            for location in LOCATIONS_PINS :
 
-                self._statusPhryges()
+            self._statusPhryges()
+            for location in LOCATIONS_PINS :
 
                 if (self.currentVirtualPins == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
@@ -268,25 +288,12 @@ class Website():
                     "accuracy": 1
                 })
 
-                # DEBUG ================================================
-                # self.driver.get("https://www.google.com/maps")
-
-                # self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
-                #     "latitude": 48.8720949,
-                #     "longitude": 2.3323339,
-                #     "accuracy": 1
-                # })
-
-                # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-                # continue_button = self.driver.find_element(By.XPATH, "//span[contains(text(), 'Tout accepter')]")
-                # continue_button.click()
-                # DEBUG ================================================
-
                 self._collectPhryges(location['name'])
 
                 time.sleep(30)
-            time.sleep(WAIT_1_HOUR * 6)
+            self.logger.Info("End of turn location")
+            # time.sleep(WAIT_1_HOUR)
+            time.sleep(240)
             return 
 
 
