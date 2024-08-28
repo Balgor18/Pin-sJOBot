@@ -17,19 +17,12 @@ MAX_PINS_VIRUTAL = 48
 
 WAIT_1_HOUR = 3600
 
+RETRY_MAX = 3
+
 LOCATIONS_PINS : Tuple[dict] = [
-    {"name" : "Middle Stade de France", "latitude" : 48.924542,"longitude" : 2.360169},
-    {"name" : "Stade de France Porte X", "latitude" : 48.923055,"longitude" : 2.357934},
-    {"name" : "West of Stade de France", "latitude" : 48.924112,"longitude" : 2.351847},
-    {"name" : "Carrefour Near of Stade de France", "latitude" : 48.920204,"longitude" : 2.345034},
-    {"name" : "Plaine Saint Denis near N1", "latitude" : 48.90371, "longitude" :2.35894},
-    {"name" : "Colombes Tennis", "latitude" : 48.93072, "longitude" :2.250156},
-    {"name" : "Middle of Paris near 3 subway station", "latitude" : 48.85254, "longitude" :2.333281},
-    {"name" : "Porte D'Orleans", "latitude" : 48.819966,"longitude" : 2.324762},
-    {"name" : "Vaire sur Marne", "latitude" : 48.865491,"longitude" : 2.62689},
-    {"name" : "Guyancourt Golf", "latitude" : 48.750457,"longitude" : 2.072079},
-    {"name" : "Versaille", "latitude" : 48.813259,"longitude" : 2.083915},
+    # Error location not good
     {"name" : "Montparnasse", "latitude" : 48.84164,"longitude" : 2.322622},
+    # HAVE TO TEST LOCATION
     {"name" : "Exposition Versaille", "latitude" : 48.828522,"longitude" : 2.289897},
     {"name" : "Exposition Versaille 2", "latitude" : 48.82853,"longitude" : 2.289871},
     {"name" : "Entrance Versaille exposition", "latitude" : 48.831011,"longitude" : 2.287623},
@@ -42,27 +35,40 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Pyramides", "latitude" : 48.864483,"longitude" : 2.332753},
     {"name" : "Concorde Stadium", "latitude" : 48.865621,"longitude" : 2.324362},
     {"name" : "Rue royale", "latitude" : 48.867838,"longitude" : 2.322569},
-    {"name" : "Champs-Elysees 17", "latitude" : 48.868333,"longitude" : 2.309426},
-    {"name" : "Champs-Elysees 16", "latitude" : 48.869653,"longitude" : 2.308656},
-    {"name" : "Champs-Elysees 15", "latitude" : 48.869297,"longitude" : 2.307707},
-    {"name" : "Champs-Elysees 14", "latitude" : 48.870064,"longitude" : 2.308656},
-    {"name" : "Champs-Elysees 13", "latitude" : 48.870411,"longitude" : 2.306893},
-    {"name" : "Champs-Elysees 12", "latitude" : 48.871074,"longitude" : 2.305854},
-    {"name" : "Champs-Elysees 11", "latitude" : 48.870420,"longitude" : 2.304580},
-    {"name" : "Champs-Elysees 10", "latitude" : 48.871499,"longitude" : 2.305449},
-    {"name" : "Champs-Elysees 9", "latitude" : 48.870895,"longitude" : 2.302781},
-    {"name" : "Champs-Elysees 8", "latitude" : 48.871901,"longitude" : 2.300807},
-    {"name" : "Champs-Elysees 7", "latitude" : 48.871546,"longitude" : 2.300453},
-    {"name" : "Champs-Elysees 6", "latitude" : 48.872302,"longitude" : 2.299734},
-    {"name" : "Champs-Elysees 5", "latitude" : 48.872302,"longitude" : 2.299734},
-    {"name" : "Champs-Elysees 4", "latitude" : 48.872461,"longitude" : 2.300274},
-    {"name" : "Champs-Elysees 3", "latitude" : 48.872235,"longitude" : 2.298298},
-    {"name" : "Champs-Elysees 2", "latitude" : 48.872566,"longitude" : 2.297081},
     {"name" : "Champs-Elysees 1", "latitude" : 48.873329,"longitude" : 2.298051},
+    {"name" : "Champs-Elysees 2", "latitude" : 48.872566,"longitude" : 2.297081},
+    {"name" : "Champs-Elysees 3", "latitude" : 48.872235,"longitude" : 2.298298},
+    {"name" : "Champs-Elysees 4", "latitude" : 48.872461,"longitude" : 2.300274},
+    {"name" : "Champs-Elysees 5", "latitude" : 48.872302,"longitude" : 2.299734},
+    {"name" : "Champs-Elysees 6", "latitude" : 48.872302,"longitude" : 2.299734},
+    {"name" : "Champs-Elysees 7", "latitude" : 48.871546,"longitude" : 2.300453},
+    {"name" : "Champs-Elysees 8", "latitude" : 48.871901,"longitude" : 2.300807},
+    {"name" : "Champs-Elysees 9", "latitude" : 48.870895,"longitude" : 2.302781},
+    {"name" : "Champs-Elysees 10", "latitude" : 48.871499,"longitude" : 2.305449},
+    {"name" : "Champs-Elysees 11", "latitude" : 48.870420,"longitude" : 2.304580},
+    {"name" : "Champs-Elysees 12", "latitude" : 48.871074,"longitude" : 2.305854},
+    {"name" : "Champs-Elysees 13", "latitude" : 48.870411,"longitude" : 2.306893},
+    {"name" : "Champs-Elysees 14", "latitude" : 48.870064,"longitude" : 2.308656},
+    {"name" : "Champs-Elysees 15", "latitude" : 48.869297,"longitude" : 2.307707},
+    {"name" : "Champs-Elysees 16", "latitude" : 48.869653,"longitude" : 2.308656},
+    {"name" : "Champs-Elysees 17", "latitude" : 48.868333,"longitude" : 2.309426},
     {"name" : "Place de la Défense 1", "latitude" : 48.892531,"longitude" : 2.237661},
     {"name" : "Place de la Défense 2", "latitude" : 48.891762,"longitude" : 2.237174},
     {"name" : "Place de la Défense 3", "latitude" : 48.891774,"longitude" : 2.236158},
-    {"name" : "Place de la Défense 4", "latitude" : 48.891905,"longitude" : 2.234358}
+    {"name" : "Place de la Défense 4", "latitude" : 48.891905,"longitude" : 2.234358},
+
+    # LOCATION IS GOOD
+    {"name" : "Middle Stade de France", "latitude" : 48.924542,"longitude" : 2.360169},
+    {"name" : "Stade de France Porte X", "latitude" : 48.923055,"longitude" : 2.357934},
+    {"name" : "West of Stade de France", "latitude" : 48.924112,"longitude" : 2.351847},
+    {"name" : "Carrefour Near of Stade de France", "latitude" : 48.920204,"longitude" : 2.345034},
+    {"name" : "Plaine Saint Denis near N1", "latitude" : 48.90371, "longitude" :2.35894},
+    {"name" : "Colombes Tennis", "latitude" : 48.93072, "longitude" :2.250156},
+    {"name" : "Middle of Paris near 3 subway station", "latitude" : 48.85254, "longitude" :2.333281},
+    {"name" : "Porte D'Orleans", "latitude" : 48.819966,"longitude" : 2.324762},
+    {"name" : "Vaire sur Marne", "latitude" : 48.865491,"longitude" : 2.62689},
+    {"name" : "Guyancourt Golf", "latitude" : 48.750457,"longitude" : 2.072079},
+    {"name" : "Versaille", "latitude" : 48.813259,"longitude" : 2.083915}
 ]
 
 class Website():
@@ -73,6 +79,7 @@ class Website():
         self.logger : Logger = logger
         self.debug : bool = debug
         self.currentVirtualPins : int = 0
+        self.retry : int = 0
         options = webdriver.ChromeOptions()
         webdriver.ChromeService(log_output="selenium.log")
         options.add_argument('--headless')
@@ -281,10 +288,16 @@ class Website():
 
             
             if (status_pins.text == "Aucun pin n‘a été trouvé.") : # J'ai pas trouvée 
-                self.logger.Warning(f"Error pin's not found need to retry {name}")
+                self.logger.Warning(f"Error pin's not found need to retry {name} retry {self.retry}/{RETRY_MAX}")
                 self.logger.Warning(f"if the error still appear verify coord GPS of \"{name}\"")
                 retryPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
                 retryPins.click()
+                if (self.retry == RETRY_MAX) :
+                    self.logger.Warning("Skip maximum retry")
+                    self.retry = 0
+                    return
+                self.retry += 1
+                time.sleep(10)
                 self._collectPhryges(name)
             elif (status_pins.text == "Un pin a été trouvé !") :
                 self.driver.save_screenshot(f"Status_{name}.png")
@@ -296,11 +309,11 @@ class Website():
                 statusPinsPlace = WebDriverWait(self.driver, 10).until(
                     expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_timer')]"))
                 )
-                
                 self.logger.Info(f"I already have it {name} need to wait {statusPinsPlace.text}")
                 getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
                 getPins.click()
 
+            self.retry = 0
             time.sleep(2)
         except Exception as error :
             self.logger.Error(f"Error on _collectPhryges {error}")
