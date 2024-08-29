@@ -22,7 +22,7 @@ RETRY_MAX = 3
 
 LOCATIONS_PINS : Tuple[dict] = [
     # Error location not good
-    {"name" : "Montparnasse", "latitude" : 48.841616,"longitude" : 2.322676},
+    {"name" : "Opéra Garnier", "latitude" : 48.872028,"longitude" : 2.331785},
     # LOCATION Working
     {"name" : "Exposition Versaille", "latitude" : 48.828522,"longitude" : 2.289897},
     {"name" : "Exposition Versaille 2", "latitude" : 48.82853,"longitude" : 2.289871},
@@ -327,7 +327,7 @@ class Website():
 
                 if (self.currentVirtualPins == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
-                    time.sleep(WAIT_1_MINUTE * 10)
+                    time.sleep(WAIT_1_HOUR * 5)
                     continue
 
                 self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
