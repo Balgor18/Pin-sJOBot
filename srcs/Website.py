@@ -325,7 +325,7 @@ class Website():
             self._statusPhryges()
             for location in LOCATIONS_PINS :
 
-                if (self.currentVirtualPins == MAX_PINS_VIRUTAL) :
+                if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
                     time.sleep(WAIT_1_HOUR * 5)
                     continue
