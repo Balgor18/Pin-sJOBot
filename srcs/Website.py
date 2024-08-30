@@ -74,7 +74,7 @@ LOCATIONS_K_POP_PINS : Tuple[dict] = [
     {"name" : "CE125", "latitude" : 48.872505,"longitude" : 2.297884},
     {"name" : "OLP", "latitude" : 48.868674,"longitude" : 2.31139},
     {"name" : "SES Rosny", "latitude" : 48.881054,"longitude" : 2.476764},
-    {"name" : "SES Velizy", "latitude" : 48.77906,"longitude" : 2.220663},
+    {"name" : "SES Velizy", "latitude" : 48.78017,"longitude" : 2.220484},
     {"name" : "SES Madeleine", "latitude" : 48.870209,"longitude" : 2.322898},
     {"name" : "SES La Défense", "latitude" : 48.89198,"longitude" : 2.23881},
     {"name" : "Fnac Ternes", "latitude" : 48.879065,"longitude" : 2.294935},
@@ -426,7 +426,7 @@ class Website():
 
                 if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
-                    time.sleep(WAIT_1_HOUR)
+                    time.sleep(WAIT_1_MINUTE * 30)
                     continue
 
                 self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
