@@ -427,7 +427,7 @@ class Website():
                 if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
                     time.sleep(WAIT_1_MINUTE * 30)
-                    continue
+                    break
 
                 self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
                     "latitude": location['latitude'],
