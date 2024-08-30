@@ -20,10 +20,8 @@ WAIT_1_HOUR = 3600
 WAIT_1_MINUTE = 60
 RETRY_MAX = 3
 
-LOCATIONS_PINS : Tuple[dict] = [
-    # Error location not good
+LOCATIONS_PHYRGE_PINS : Tuple[dict] = [
     {"name" : "Opéra Garnier", "latitude" : 48.872028,"longitude" : 2.331785},
-    # LOCATION Working
     {"name" : "Exposition Versaille", "latitude" : 48.828522,"longitude" : 2.289897},
     {"name" : "Exposition Versaille 2", "latitude" : 48.82853,"longitude" : 2.289871},
     {"name" : "Entrance Versaille exposition", "latitude" : 48.831011,"longitude" : 2.287623},
@@ -69,6 +67,25 @@ LOCATIONS_PINS : Tuple[dict] = [
     {"name" : "Vaire sur Marne", "latitude" : 48.865491,"longitude" : 2.62689},
     {"name" : "Guyancourt Golf", "latitude" : 48.750457,"longitude" : 2.072079},
     {"name" : "Versaille", "latitude" : 48.813259,"longitude" : 2.083915}
+]
+
+LOCATIONS_K_POP_PINS : Tuple[dict] = [
+    {"name" : "CE125", "latitude" : 48.872505,"longitude" : 2.297884},
+    {"name" : "OLP", "latitude" : 48.868674,"longitude" : 2.31139},
+    {"name" : "SES Rosny", "latitude" : 48.881054,"longitude" : 2.476764},
+    {"name" : "SES Velizy", "latitude" : 48.77906,"longitude" : 2.220663},
+    {"name" : "SES Madeleine", "latitude" : 48.870209,"longitude" : 2.322898},
+    {"name" : "SES La Défense", "latitude" : 48.89198,"longitude" : 2.23881},
+    {"name" : "Fnac Ternes", "latitude" : 48.879065,"longitude" : 2.294935},
+    {"name" : "Fnac Beaugrenelle", "latitude" : 48.848462,"longitude" : 2.282393},
+    {"name" : "Fnac Montparnasse", "latitude" : 48.84586,"longitude" : 2.325508},
+    {"name" : "Fnac St Lazare", "latitude" : 48.875348,"longitude" : 2.326998},
+    {"name" : "Fnac Forum", "latitude" : 48.861546,"longitude" : 2.346947},
+    {"name" : "Fnac Champs Elysées", "latitude" : 48.87128,"longitude" : 2.304682},
+    {"name" : "Arc de triomphe", "latitude" : 48.873779,"longitude" : 2.295037},
+    {"name" : "Notre-Dame", "latitude" : 48.852937,"longitude" : 2.35005},
+    {"name" : "The Louvre", "latitude" : 48.861033,"longitude" : 2.335834},
+    {"name" : "Opéra Garnier", "latitude" : 48.872028,"longitude" : 2.331785}
 ]
 
 class Website():
@@ -231,12 +248,7 @@ class Website():
         return
 
     def goToPhrygesPage(self) -> None :
-        URL = "https://125.galaxyexperienceparis.com/fr/pin-board/phryges"
-        self.logger.Info(f"Web browser go to {URL}")
-        self.driver.get(URL)
-        time.sleep(2)
-        if (self.debug) :
-            self.driver.save_screenshot(f"{SAVE_FOLDERS}/phryges_page.png")
+        return
 
     def _statusPhryges(self) -> None :
         try :
@@ -280,7 +292,7 @@ class Website():
 
             # DEBUG
             # print(self.driver.page_source)
-            self.driver.save_screenshot(f"Status_{name}.png")
+            self.driver.save_screenshot(f"Phryges_Status_{name}.png")
 
             status_pins = WebDriverWait(self.driver, 10).until(
                 expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_text_')]"))# GPSMainSection_text_found
@@ -319,15 +331,104 @@ class Website():
             self.logger.Error(f"Error on _collectPhryges {error}")
         return
 
+    def _statusKpop(self) -> None :
+        try :
+            virtualPins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'KDigitalPinBoard_currentstamp__')]"))
+            )
+            currentVirtualPins = virtualPins.text
+            self.logger.Info(f" Status Pin's virtual : {currentVirtualPins}/36")
+
+            button_qrcode = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//img[@alt='qr icon']"))
+            )
+            button_qrcode.click()
+            time.sleep(2)
+
+
+            collectablePins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(@class, 'QrOperationImageBox_count')]"))
+            )
+            self.logger.Info(f" Status collectable Pin's : {collectablePins.text} !")
+
+            closeModal = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(@class, 'CircleButton_circlebtn_innercontainer')]"))
+            )
+            closeModal.click()
+
+        except Exception as error: 
+            self.driver.save_screenshot("error_screenshot.png")
+            self.logger.Critical(f"Error on _statusPhryges {error}")
+            exit(1)
+        return
+
+    def _collectKpop(self, name : str) -> None :
+        # TODO Go to Kpop Page and launch the collect
+        try : 
+            self.logger.Info(f"Try to get the K-POP pin's locate at {name}")
+            buttonGetPins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'KDigitalPinSection_link_title')]"))
+            )
+            buttonGetPins.click()
+            time.sleep(10)
+
+            # DEBUG
+            # print(self.driver.page_source)
+            self.driver.save_screenshot(f"K-POP_Status_{name}.png")
+
+            status_pins = WebDriverWait(self.driver, 10).until(
+                expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_text_')]"))# GPSMainSection_text_found
+            )
+
+            
+            if (status_pins.text == "Aucun pin n‘a été trouvé.") : # J'ai pas trouvée 
+                self.logger.Warning(f"Error K-POP pin's not found need to retry {name} retry {self.retry}/{RETRY_MAX}")
+                self.logger.Warning(f"if the error still appear verify coord GPS of \"{name}\"")
+                retryPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
+                retryPins.click()
+                if (self.retry == RETRY_MAX) :
+                    self.logger.Warning("Skip maximum retry")
+                    self.retry = 0
+                    return
+                self.retry += 1
+                time.sleep(5)
+                self._collectPhryges(name)
+            elif (status_pins.text == "Un pin a été trouvé !") :
+                self.driver.save_screenshot(f"Status_{name}.png")
+                self.logger.Info("Congrats new KPop pin's Add")
+                getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Recevoir le pin')]")
+                getPins.click()
+                
+            else :
+                statusPinsPlace = WebDriverWait(self.driver, 10).until(
+                    expected_conditions.presence_of_element_located((By.XPATH, "//*[contains(@class, 'GPSMainSection_timer')]"))
+                )
+                self.logger.Info(f"I already have it {name} need to wait {statusPinsPlace.text}")
+                getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Vers le tableau de pins')]")
+                getPins.click()
+
+            self.retry = 0
+            time.sleep(2)
+        except Exception as error :
+            self.logger.Error(f"Error on _collectKpop {error}")
+        return
+
     def getPhryges(self) -> None :
         while True :
 
+            # Virtual Phryges 
+            URL = "https://125.galaxyexperienceparis.com/fr/pin-board/phryges"
+            self.logger.Info(f"Web browser go to {URL}")
+            self.driver.get(URL)
+            time.sleep(2)
+            if (self.debug) :
+                self.driver.save_screenshot(f"{SAVE_FOLDERS}/phryges_page.png")
             self._statusPhryges()
-            for location in LOCATIONS_PINS :
+            for location in LOCATIONS_PHYRGE_PINS :
 
                 if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
                     self.logger.Warning("ATTENTION Max pin's virtuel reached")
-                    time.sleep(WAIT_1_HOUR * 5)
+                    time.sleep(WAIT_1_HOUR)
                     continue
 
                 self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
@@ -337,11 +438,33 @@ class Website():
                 })
 
                 self._collectPhryges(location['name'])
-
                 time.sleep(4)
-            self.logger.Info("End of turn location")
+
+            self.logger.Info("End of phryges location")
             self._statusPhryges()
-            # time.sleep(WAIT_1_HOUR)
+
+            # K-POP Pins
+            URL = "https://125.galaxyexperienceparis.com/fr/pin-board/k-digital"
+            self.logger.Info(f"Web browser go to {URL}")
+            self.driver.get(URL)
+            time.sleep(2)
+            if (self.debug) :
+                self.driver.save_screenshot(f"{SAVE_FOLDERS}/K-POP_page.png")
+            self._statusKpop()
+            for location in LOCATIONS_K_POP_PINS :
+
+                self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
+                    "latitude": location['latitude'],
+                    "longitude": location['longitude'],
+                    "accuracy": 1
+                })
+
+                self._collectKpop(location['name'])
+                time.sleep(4)
+
+            self.logger.Info("End of K-POP location")
+            self._statusKpop()
+
             time.sleep(WAIT_1_MINUTE * 30)
 
 
