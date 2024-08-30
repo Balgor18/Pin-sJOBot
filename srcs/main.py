@@ -23,7 +23,6 @@ def main() -> None:
         website = Website(URL, logger, debug=False)
 
         website.connect()
-        website.goToPhrygesPage()
 
         website.getPhryges()
 

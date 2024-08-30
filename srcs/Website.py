@@ -18,7 +18,8 @@ MAX_PINS_VIRUTAL = 48
 WAIT_1_HOUR = 3600
 
 WAIT_1_MINUTE = 60
-RETRY_MAX = 3
+
+RETRY_MAX = 0
 
 LOCATIONS_PHYRGE_PINS : Tuple[dict] = [
     {"name" : "Opéra Garnier", "latitude" : 48.872028,"longitude" : 2.331785},
@@ -247,9 +248,6 @@ class Website():
             return
         return
 
-    def goToPhrygesPage(self) -> None :
-        return
-
     def _statusPhryges(self) -> None :
         try :
             virtualPins = WebDriverWait(self.driver, 10).until(
@@ -392,9 +390,9 @@ class Website():
                     return
                 self.retry += 1
                 time.sleep(5)
-                self._collectPhryges(name)
+                self._collectKpop(name)
             elif (status_pins.text == "Un pin a été trouvé !") :
-                self.driver.save_screenshot(f"Status_{name}.png")
+                self.driver.save_screenshot(f"K-POP_Status_{name}.png")
                 self.logger.Info("Congrats new KPop pin's Add")
                 getPins = self.driver.find_element(By.XPATH, "//*[contains(text(), 'Recevoir le pin')]")
                 getPins.click()
@@ -417,31 +415,31 @@ class Website():
         while True :
 
             # Virtual Phryges 
-            URL = "https://125.galaxyexperienceparis.com/fr/pin-board/phryges"
-            self.logger.Info(f"Web browser go to {URL}")
-            self.driver.get(URL)
-            time.sleep(2)
-            if (self.debug) :
-                self.driver.save_screenshot(f"{SAVE_FOLDERS}/phryges_page.png")
-            self._statusPhryges()
-            for location in LOCATIONS_PHYRGE_PINS :
+            # URL = "https://125.galaxyexperienceparis.com/fr/pin-board/phryges"
+            # self.logger.Info(f"Web browser go to {URL}")
+            # self.driver.get(URL)
+            # time.sleep(2)
+            # if (self.debug) :
+            #     self.driver.save_screenshot(f"{SAVE_FOLDERS}/phryges_page.png")
+            # self._statusPhryges()
+            # for location in LOCATIONS_PHYRGE_PINS :
 
-                if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
-                    self.logger.Warning("ATTENTION Max pin's virtuel reached")
-                    time.sleep(WAIT_1_HOUR)
-                    continue
+            #     if (int(self.currentVirtualPins) == MAX_PINS_VIRUTAL) :
+            #         self.logger.Warning("ATTENTION Max pin's virtuel reached")
+            #         time.sleep(WAIT_1_HOUR)
+            #         continue
 
-                self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
-                    "latitude": location['latitude'],
-                    "longitude": location['longitude'],
-                    "accuracy": 1
-                })
+            #     self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
+            #         "latitude": location['latitude'],
+            #         "longitude": location['longitude'],
+            #         "accuracy": 1
+            #     })
 
-                self._collectPhryges(location['name'])
-                time.sleep(4)
+            #     self._collectPhryges(location['name'])
+            #     time.sleep(4)
 
-            self.logger.Info("End of phryges location")
-            self._statusPhryges()
+            # self.logger.Info("End of phryges location")
+            # self._statusPhryges()
 
             # K-POP Pins
             URL = "https://125.galaxyexperienceparis.com/fr/pin-board/k-digital"
