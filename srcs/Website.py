@@ -436,7 +436,7 @@ class Website():
                 })
 
                 self._collectPhryges(location['name'])
-                time.sleep(4)
+                time.sleep(WAIT_1_MINUTE * 5)
 
             self.logger.Info("End of phryges location")
             self._statusPhryges()
@@ -458,7 +458,7 @@ class Website():
                 })
 
                 self._collectKpop(location['name'])
-                time.sleep(4)
+                time.sleep(WAIT_1_MINUTE * 5)
 
             self.logger.Info("End of K-POP location")
             self._statusKpop()
